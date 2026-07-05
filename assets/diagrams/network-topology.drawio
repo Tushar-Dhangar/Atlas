@@ -1,0 +1,63 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="L5VX9vRVaGGAXo_ADKDo">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WKE22aXmg4Z_72zxXf6L-8" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" target="WKE22aXmg4Z_72zxXf6L-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WKE22aXmg4Z_72zxXf6L-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;fontSize=14;" value="Internet" vertex="1">
+          <mxGeometry height="70" width="124" x="350" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="WKE22aXmg4Z_72zxXf6L-9" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" target="WKE22aXmg4Z_72zxXf6L-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-13" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" target="oMGlxOLKhWIIuUL224MQ-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-14" connectable="0" parent="oMGlxOLKhWIIuUL224MQ-13" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" value="KALI01 NAT to Internet" vertex="1">
+          <mxGeometry relative="1" x="0.0311" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKE22aXmg4Z_72zxXf6L-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;fontSize=14;" value="Edge Router&lt;div&gt;Gateway / Boundary&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="124" x="350" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-6" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=14;" target="oMGlxOLKhWIIuUL224MQ-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-7" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=14;" target="oMGlxOLKhWIIuUL224MQ-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-8" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=14;" target="oMGlxOLKhWIIuUL224MQ-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-12" edge="1" parent="1" source="WKE22aXmg4Z_72zxXf6L-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" target="oMGlxOLKhWIIuUL224MQ-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WKE22aXmg4Z_72zxXf6L-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;fontSize=14;" value="Core Switch&lt;div&gt;Corpnet 10.10.10.0/24&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="124" x="350" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;" value="Trust Boundary - Corpnet" vertex="1">
+          <mxGeometry height="30" width="140" x="90" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;opacity=40;fontSize=14;container=0;" value="" vertex="1">
+          <mxGeometry height="180" width="680" x="74" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;fontSize=14;container=0;" value="KALI01&lt;div&gt;Security Workstation&lt;/div&gt;&lt;div&gt;10.10.10.40&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="130" x="431" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fa6800;fontColor=light-dark(#ffffff, #ededed);strokeColor=#C73500;fontSize=14;container=0;" value="APP01&lt;div&gt;Ubuntu Server&lt;/div&gt;&lt;div&gt;10.10.10.20&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="130" x="269" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;fontSize=14;container=0;" value="WS01&lt;div&gt;Windows 11 Client&lt;/div&gt;&lt;div&gt;10.10.10.30&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="129" x="594" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="oMGlxOLKhWIIuUL224MQ-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;fontSize=14;container=0;" value="DC01&lt;div&gt;AD DS / DNS&lt;/div&gt;&lt;div&gt;10.10.10.10&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="130" x="106" y="630" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
