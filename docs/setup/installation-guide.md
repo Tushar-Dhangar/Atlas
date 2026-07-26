@@ -244,3 +244,97 @@ rather than a networking fault on APP01's side.
 The VMware recovery point `APP01 - Base Build` was taken once networking was
 validated, giving a rebuild point for APP01 before any application services
 are installed on it.
+
+## WS01
+
+WS01 is the domain-joined Windows client, the third host built in the
+environment.
+
+### Virtual machine
+
+WS01 is hosted in VMware Workstation on the same `corpnet` LAN segment as
+DC01 and APP01. The VM uses 4 GB RAM, 2 vCPUs and a 60 GB virtual disk.
+
+Windows 11 requires a virtual TPM, which VMware satisfies by encrypting the
+files needed to support it (`.nvram`, `.vmsn` and related files). Only those
+files are encrypted, not the whole VM, keeping snapshot and clone behaviour
+close to a normal unencrypted VM. The encryption password is stored in
+VMware's own credential manager rather than recorded here.
+
+### Base operating system installation
+
+The design calls for Windows 11 Enterprise, but the installation media
+available only offered Home and Pro editions, not Enterprise (Enterprise
+ships through volume licensing or a separate evaluation ISO, not the general
+consumer media used here). **Windows 11 Pro** was installed instead. Pro
+supports Active Directory domain join, which is the capability WS01 actually
+needs; Home does not support this at all. The substitution is a media
+availability issue, not a design change.
+
+Two install-time obstacles were expected and handled:
+
+- No product key was entered (skipped via the "I don't have a product key"
+  option). Activation isn't required for a lab client.
+- The out-of-box setup normally requires an internet connection to continue,
+  which corpnet doesn't provide (no gateway). This was bypassed by opening a
+  command prompt during OOBE (`Shift+F10`) and running `OOBE\BYPASSNRO`, which
+  reboots into the same screen with an "I don't have internet" option
+  available, allowing setup to continue with a local account.
+
+The local account created during setup is `wolfsec-admin`, matching the
+convention used on APP01. After first boot, the hostname was changed from the
+Windows-generated default to `WS01` (Settings > System > About > Rename this
+PC), before the domain join, to avoid a second rename and rejoin afterward.
+
+### Network configuration
+
+Static networking was set through Settings > Network & Internet > Ethernet,
+matching the pattern used on DC01 and APP01:
+
+| Setting | Value |
+|---|---|
+| Hostname | `WS01` |
+| IPv4 address | `10.10.10.30` |
+| Subnet mask | `255.255.255.0` |
+| Default gateway | None |
+| Preferred DNS server | `10.10.10.10` |
+
+No gateway is configured for the same reason as the other hosts: corpnet is
+isolated and WS01 has no route to the internet.
+
+### Domain join
+
+WS01 was joined to `apexdynamics.internal` through Settings > Accounts >
+Access work or school > Connect > "Join this device to a local Active
+Directory domain". The join requires credentials with rights to add computer
+objects to the domain; the built-in `APEX\Administrator` account was used for
+this, since no delegated join permissions have been configured yet.
+
+The post-join "Add an account" prompt, which pre-assigns one domain account
+local rights on the machine, was skipped. Any domain user can already log on
+to a domain-joined machine and receive standard local rights without being
+added here; this step only matters for granting a specific account local
+Administrator, which WS01 doesn't need since it's a shared test workstation
+rather than one person's machine.
+
+### Validation
+
+After the domain join and restart, login was tested with an existing AD
+account, `james.whitmore`, rather than the local `wolfsec-admin` account, to
+confirm the join actually grants domain authentication rather than just
+appearing to succeed.
+
+```powershell
+whoami
+hostname
+echo %USERDOMAIN%
+```
+
+Results: `whoami` returned `apex\james.whitmore`, `hostname` returned `WS01`,
+and `%USERDOMAIN%` returned `APEX`. Together these confirm the machine is
+authenticating against the domain rather than a local account, and that the
+NetBIOS domain name is being reported correctly on a client for the first
+time in the build (DC01 and APP01 don't surface this the same way).
+
+The VMware recovery point `WS01 - Domain Join Baseline` was taken once the
+domain login was confirmed working.

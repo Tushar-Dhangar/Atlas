@@ -69,3 +69,35 @@ taken once networking was confirmed working.
 
 The next build milestones are WS01, the Windows 11 client, and KALI01, the
 security workstation.
+
+## WS01: domain join completed
+
+WS01 was built in VMware Workstation on `corpnet`, alongside DC01 and APP01,
+with 4 GB RAM, 2 vCPUs and a 60 GB disk. Windows 11 needs a virtual TPM, so
+VMware encrypted the TPM-related files with a password stored in its own
+credential manager, rather than the whole VM.
+
+The available install media only offered Windows 11 Home and Pro, not the
+Enterprise edition the design calls for. Pro was installed instead, since it
+supports domain join and Home doesn't. This is a media substitution, not a
+design change, and is recorded as such rather than treated as matching the
+original spec exactly.
+
+Two setup obstacles came up and were handled the same way they'd come up on a
+real deployment: no product key was entered, and the out-of-box setup's
+internet requirement was bypassed with `OOBE\BYPASSNRO` from a command prompt,
+since corpnet has no gateway for setup to reach out on.
+
+The machine was renamed to `WS01` before joining the domain, to avoid a second
+rename and rejoin afterward, then joined to `apexdynamics.internal` using the
+`APEX\Administrator` account. The post-join prompt to assign a specific
+account local rights was skipped, since WS01 is a shared test workstation and
+any domain user already gets standard local rights by logging on.
+
+Validation logged in as `james.whitmore`, an existing AD account, rather than
+the local admin account, specifically to confirm real domain authentication.
+`whoami` returned `apex\james.whitmore`, hostname returned `WS01`, and
+`%USERDOMAIN%` returned `APEX`, confirming the join. The `WS01 - Domain Join
+Baseline` VMware snapshot was taken once this was confirmed.
+
+The next build milestone is KALI01, the security workstation.
