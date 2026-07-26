@@ -433,3 +433,53 @@ internet through its second adapter.
 
 The VMware recovery point `KALI01 - Dual-Homed Baseline` was taken once both
 network paths were confirmed working, completing the initial four-host build.
+
+## Environment-wide validation
+
+Each host above was validated individually against DC01, but not against each
+other. Before treating the build as complete, a connectivity matrix was run
+across all four hosts on corpnet to confirm the network works as a whole, not
+just host-to-DC01.
+
+| From | To | Result |
+|---|---|---|
+| WS01 | APP01 | Success, 4/4, 0% loss |
+| APP01 | WS01 | Initially 100% loss, fixed (see below), then 4/4, 0% loss |
+| KALI01 | WS01 | Success, 4/4, 0% loss |
+| KALI01 | APP01 | Success, 4/4, 0% loss |
+| KALI01 | DC01 | Already confirmed during KALI01 validation |
+| APP01 | DC01 | Already confirmed during APP01 validation |
+| WS01 | DC01 | Already confirmed via domain join and login |
+
+The `APP01 → WS01` leg initially failed completely, while `WS01 → APP01` had
+already succeeded. This asymmetry pointed at WS01 specifically rather than a
+corpnet problem, since APP01 could clearly be reached from elsewhere. The
+cause was Windows Defender Firewall's default behaviour: outbound ping is
+allowed, but inbound ICMP Echo Request is blocked unless the File and Printer
+Sharing rules are enabled. Ubuntu allows inbound ping by default, which is
+why the WS01-initiated direction worked immediately and masked the problem
+until the reverse direction was tested.
+
+Fixed on WS01, from an elevated PowerShell session:
+
+```powershell
+Enable-NetFirewallRule -DisplayGroup "File and Printer Sharing"
+```
+
+`-DisplayGroup` alone enables every currently-disabled rule in that group.
+Passing `-Enabled True` alongside it does not do what it looks like it does —
+that parameter filters for rules that are already enabled rather than acting
+as an instruction to enable them, so combining it with `-DisplayGroup` on an
+all-disabled group matches nothing and silently does no work.
+
+Elevating that PowerShell session also surfaced a second, unrelated issue:
+the UAC prompt defaulted to the domain `APEX\Administrator` account, which
+failed with "your domain isn't available" because the local machine couldn't
+reach DC01 to validate the credential at that moment. Using the local
+`WS01\wolfsec-admin` account instead elevated without needing the domain, and
+is the account to use for local administration tasks on WS01 going forward,
+reserving the domain Administrator account for actual domain-level actions.
+
+With the firewall rule enabled, `APP01 → WS01` succeeded 4/4 with 0% loss,
+completing the matrix. Every host on corpnet can now reach every other host,
+not just DC01.

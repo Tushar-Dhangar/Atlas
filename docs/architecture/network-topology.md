@@ -83,7 +83,7 @@ out of the logical architecture and belongs in the implementation notes instead.
 ## Logical vs implementation
 
 This document describes the logical enterprise network — what exists and why.
-How the topology is recreated in the lab (VirtualBox, the NAT adapter, the
-Internal Network) is documented separately under the setup docs. The logical
+How the topology is recreated in the lab (VMware Workstation, the NAT adapter,
+the LAN Segment) is documented separately under the setup docs. The logical
 view describes intent; the implementation view describes deployment, and keeping
 them apart stops one from muddying the other.

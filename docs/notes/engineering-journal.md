@@ -138,3 +138,34 @@ snapshot was taken once both paths were confirmed.
 With KALI01 built, the initial four-host Atlas environment (DC01, APP01,
 WS01, KALI01) is complete. Next steps move into validation and documentation
 of the environment as a whole, ahead of the Atlas v1.0 milestone.
+
+## Environment-wide connectivity validated
+
+Every host had been validated against DC01 individually, but not against each
+other, so a connectivity matrix was run across all four corpnet hosts:
+WS01↔APP01 and KALI01→WS01/APP01, on top of the DC01 legs already covered
+during each host's own build.
+
+WS01→APP01 worked immediately. APP01→WS01 came back 100% packet loss, which
+was the useful signal here: since APP01 was already reachable from elsewhere,
+the problem had to be WS01 refusing inbound traffic specifically, not a
+corpnet issue. That turned out to be Windows Defender Firewall's default of
+blocking inbound ICMP while allowing outbound, which is exactly why the WS01
+side worked and masked the problem until the reverse direction was tested.
+`Enable-NetFirewallRule -DisplayGroup "File and Printer Sharing"` fixed it;
+adding `-Enabled True` to that command looks reasonable but is wrong, since
+that flag filters for already-enabled rules rather than switching them on.
+
+Getting to an elevated session on WS01 to run that command surfaced a second
+issue: the UAC prompt defaulted to `APEX\Administrator`, which failed because
+WS01 couldn't reach DC01 to validate the domain credential at that moment.
+The local `wolfsec-admin` account elevated without a problem, since local
+elevation doesn't depend on domain availability. That's now the account to
+reach for on WS01's own local administration, rather than assuming the domain
+Administrator is always usable there.
+
+With the firewall rule enabled, every leg of the matrix passed at 0% packet
+loss. Every host on corpnet can reach every other host, not just DC01,
+closing out the validation phase. The full four-host Atlas build is
+complete and pushed to GitHub. The environment is ready to hand off as the
+foundation for Sentinel.
