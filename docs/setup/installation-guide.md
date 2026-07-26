@@ -338,3 +338,98 @@ time in the build (DC01 and APP01 don't surface this the same way).
 
 The VMware recovery point `WS01 - Domain Join Baseline` was taken once the
 domain login was confirmed working.
+
+## KALI01
+
+KALI01 is the security engineering workstation, the fourth and final host in
+the initial build. Unlike the other three, it is not a production Apex
+Dynamics asset — it's the security engineer's own testing box, and it's the
+only host with a path to the internet alongside corpnet.
+
+### Virtual machine
+
+KALI01 is hosted in VMware Workstation with 4 GB RAM, 2 vCPUs and an 80 GB
+dynamic disk. Kali has no dedicated guest OS entry in VMware's New Virtual
+Machine wizard, so **Debian 12.x 64-bit** was selected as the closest match;
+this only affects VMware's default resource/driver settings and has no effect
+on the actual installed OS, which comes entirely from the Kali installer ISO.
+
+KALI01 is the only host in the environment with two network adapters:
+
+- **Network Adapter:** LAN Segment `corpnet` — the path into the isolated
+  enterprise network, same as every other host
+- **Network Adapter 2:** NAT — internet access for pulling tooling and
+  updates, which no other host in Atlas has
+
+The first adapter was created when the VM itself was set up. The second (NAT)
+adapter was missed initially and added afterward through VM Settings once
+network validation showed only one interface existed; see the validation
+section below for how that was caught.
+
+### Base operating system installation
+
+The Kali installer (graphical, non-live) was used rather than the live image,
+since KALI01 needs to be a persistent workstation. During install:
+
+- Hostname was set to `KALI01`, matching the naming convention. No domain
+  name was set — KALI01 is not part of `apexdynamics.internal` and doesn't
+  need a search suffix for it.
+- The corpnet interface was configured manually with address `10.10.10.40/24`,
+  reflecting that this network has no DHCP server. Name servers were set to
+  `10.10.10.10 8.8.8.8`, so internal Apex Dynamics names resolve via DC01 and
+  everything else falls back to a public resolver, since KALI01 is the one
+  host that needs both.
+- Default partitioning was used, no LVM or disk encryption, since KALI01
+  doesn't carry the same directory/identity data DC01 does.
+- Xfce was selected as the desktop environment, with the `top10` and
+  `default` tool collections, Kali's standard install-time defaults.
+- The local account created is `wolfsec-admin`, the same convention used on
+  APP01 and WS01.
+
+### Network configuration issue and fix
+
+After first boot, `ip a` showed only one interface (`eth0`, corpnet) with no
+IPv4 address at all, and no second interface. Checking VM Settings confirmed
+only the corpnet LAN Segment adapter existed; the NAT adapter had not
+actually been added before install. A second Network Adapter set to NAT was
+added in VM Settings, and the VM was rebooted, after which `eth1` appeared
+with a DHCP-assigned address on the NAT network.
+
+Separately, the static address entered for `eth0` during installation did not
+persist — `ip a` showed the interface up but with no IPv4 assigned.
+`nmcli con show` revealed the corpnet connection profile (`Wired connection
+1`) existed but had never been bound to a device. It was fixed directly:
+
+```bash
+sudo nmcli con modify "Wired connection 1" ifname eth0 \
+    ipv4.addresses 10.10.10.40/24 \
+    ipv4.method manual \
+    ipv4.gateway "" \
+    ipv4.dns "10.10.10.10 8.8.8.8"
+sudo nmcli con up "Wired connection 1"
+```
+
+Setting `ipv4.method manual` without an address already present fails with
+`method 'manual' requires at least an address or a route`, so the address and
+method need to be set together in the same command rather than as separate
+`nmcli con modify` calls.
+
+### Validation
+
+```bash
+ip a
+ping -c 4 10.10.10.10
+ping -c 4 8.8.8.8
+nslookup apexdynamics.internal 10.10.10.10
+```
+
+Results: `eth0` shows `10.10.10.40/24` (corpnet, static), `eth1` shows a
+`192.168.178.0/24` DHCP address (NAT). Ping to DC01 succeeded with 4/4 packets
+and 0% loss, confirming the corpnet path. Ping to `8.8.8.8` succeeded with 4/4
+packets and 0% loss, confirming the NAT/internet path. `nslookup` against DC01
+correctly resolved `apexdynamics.internal` to `10.10.10.10`, confirming
+KALI01 uses DC01 for internal name resolution while still reaching the
+internet through its second adapter.
+
+The VMware recovery point `KALI01 - Dual-Homed Baseline` was taken once both
+network paths were confirmed working, completing the initial four-host build.

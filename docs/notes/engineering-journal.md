@@ -101,3 +101,40 @@ the local admin account, specifically to confirm real domain authentication.
 Baseline` VMware snapshot was taken once this was confirmed.
 
 The next build milestone is KALI01, the security workstation.
+
+## KALI01: dual-homed build completed
+
+KALI01 was built in VMware Workstation with 4 GB RAM, 2 vCPUs and an 80 GB
+disk, using Debian 12.x as the closest guest OS profile since VMware has no
+dedicated Kali entry. It's the fourth and final host in the initial build,
+and the only one that isn't a production Apex Dynamics asset — it's the
+security engineer's own testing box.
+
+It's also the only host with two network adapters: LAN Segment `corpnet` for
+reaching the enterprise network, and NAT for internet access to pull tooling.
+The install itself used the graphical Kali installer, hostname `KALI01`, no
+domain suffix, default disk partitioning, Xfce with the standard top10 and
+default tool collections, and the `wolfsec-admin` local account convention
+used across the non-domain hosts.
+
+Two networking problems showed up after first boot, both worth recording
+since they're easy to hit again on a rebuild. First, only one interface
+existed at all — the NAT adapter had been skipped when the VM was created,
+so only corpnet was present. This was fixed by adding a second Network
+Adapter set to NAT in VM Settings and rebooting, after which the interface
+appeared with a DHCP address. Second, the static `10.10.10.40/24` address
+entered during install never actually bound to the corpnet interface;
+`nmcli con show` showed the connection profile existed but wasn't attached
+to a device. Setting `ifname`, `ipv4.addresses` and `ipv4.method manual` all
+in a single `nmcli con modify` command fixed it — setting the method before
+the address exists fails, since manual mode requires an address or route to
+already be present.
+
+Validation confirmed both paths: a 4/4, 0%-loss ping to DC01 over corpnet, a
+4/4, 0%-loss ping to `8.8.8.8` over NAT, and a correct `nslookup` resolution
+of `apexdynamics.internal` against DC01. The `KALI01 - Dual-Homed Baseline`
+snapshot was taken once both paths were confirmed.
+
+With KALI01 built, the initial four-host Atlas environment (DC01, APP01,
+WS01, KALI01) is complete. Next steps move into validation and documentation
+of the environment as a whole, ahead of the Atlas v1.0 milestone.
