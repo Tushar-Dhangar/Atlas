@@ -44,8 +44,10 @@ Full reasoning behind the addressing, segmentation and host design is in
 ## Technology
 
 Windows Server 2022 (Active Directory Domain Services, DNS), Ubuntu Server 24.04
-LTS, Windows 11 Enterprise, and Kali Linux, all built and networked in an
-isolated lab environment.
+LTS, Windows 11 Pro, and Kali Linux, all built and networked in an
+isolated lab environment. Windows 11 Pro was used in place of Enterprise due
+to install media availability; see the
+[build guide](docs/setup/installation-guide.md) for details.
 
 ## Repository layout
 
@@ -63,9 +65,9 @@ Atlas is built in sprints, moving from architecture through to a validated
 enterprise environment.
 
 - Repository foundation and standards — complete
-- Enterprise architecture and network design — in progress
-- Infrastructure build (Active Directory, DNS, client join) — planned
-- Validation and documentation — planned
+- Enterprise architecture and network design — complete
+- Infrastructure build (Active Directory, DNS, client join) — complete
+- Validation and documentation — in progress
 - Atlas v1.0 — planned
 
 ## WolfSec Labs portfolio

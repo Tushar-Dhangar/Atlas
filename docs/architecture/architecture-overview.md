@@ -24,7 +24,8 @@ The initial environment consists of four systems.
 
 - **DC01** – Windows Server 2022 Domain Controller
 - **APP01** – Ubuntu Server providing internal Linux services
-- **WS01** – Windows 11 Enterprise workstation
+- **WS01** – Windows 11 Pro workstation (Enterprise was specified, Pro was
+  installed due to install media availability; see the build guide)
 - **KALI01** – Kali Linux security workstation
 
 All systems communicate over an isolated internal network using the **10.10.10.0/24** private address space.
@@ -68,4 +69,6 @@ Detailed information about the environment can be found in the following documen
 
 ## Current Status
 
-Sprint 2 – Enterprise Architecture
+Sprint 3 – Infrastructure build complete. All four hosts (DC01, APP01, WS01,
+KALI01) are installed, networked and validated. Next: environment-wide
+validation and documentation ahead of Atlas v1.0.

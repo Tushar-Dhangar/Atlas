@@ -33,7 +33,8 @@ The environment has been designed with the following objectives:
 The initial deployment consists of:
 
 - Windows Server 2022 acting as the Domain Controller.
-- Windows 11 Enterprise client.
+- Windows 11 client (Enterprise was specified; Pro was installed due to
+  install media availability, see the build guide).
 - Ubuntu Server for internal Linux services.
 - Kali Linux workstation for security testing.
 - An isolated internal network using the 10.10.10.0/24 address space.
@@ -50,4 +51,8 @@ Every system introduced into Atlas should have a clear business purpose and beco
 
 ## Current Status
 
-Sprint 2 – Enterprise Architecture Design
+Sprint 3 – Infrastructure build complete. All four hosts are installed,
+networked and validated against this design. See the
+[build guide](../setup/installation-guide.md) and
+[engineering journal](../notes/engineering-journal.md) for the completed
+build.

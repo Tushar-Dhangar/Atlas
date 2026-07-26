@@ -51,7 +51,8 @@ This document records every system that forms part of the Atlas environment. Kee
 
 **Hostname:** WS01
 
-**Operating System:** Windows 11 Enterprise
+**Operating System:** Windows 11 Pro (Enterprise was specified in the design;
+Pro was installed due to install media availability — see the build guide)
 
 **Primary Responsibilities**
 
