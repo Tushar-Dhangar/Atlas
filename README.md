@@ -68,7 +68,7 @@ enterprise environment.
 - Enterprise architecture and network design — complete
 - Infrastructure build (Active Directory, DNS, client join) — complete
 - Validation and documentation — complete
-- Atlas v1.0 — planned
+- Atlas v1.0 — complete
 
 ## WolfSec Labs portfolio
 
