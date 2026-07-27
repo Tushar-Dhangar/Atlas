@@ -17,7 +17,9 @@ Focus
 
 Endpoint monitoring and detection engineering.
 
-Atlas provides the infrastructure that Sentinel will monitor.
+Atlas provides the infrastructure that Sentinel monitors. Sentinel is built:
+a Wazuh manager (MON01) collects logs and telemetry from every Atlas host and
+has validated a real detection end to end.
 
 ---
 

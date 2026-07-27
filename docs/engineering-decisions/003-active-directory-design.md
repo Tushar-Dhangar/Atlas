@@ -1,4 +1,6 @@
-# Active Directory Design
+# ADR-003: Active Directory Design
+
+**Status:** Accepted
 
 This records the Active Directory design decisions for the Apex Dynamics domain,
 made before the first domain controller was promoted. Nothing here was installed
